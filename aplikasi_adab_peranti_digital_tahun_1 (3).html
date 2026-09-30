@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Adab Peranti Digital - Tahun 1</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font - Fredoka & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti for rewards -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Fredoka', 'Inter', sans-serif;
+            background-color: #f0fdf4;
+        }
+        .btn-bounce:hover {
+            transform: scale(1.05);
+        }
+        .btn-bounce:active {
+            transform: scale(0.95);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid #e2e8f0;
+        }
+        .pulse-subtle {
+            animation: pulse-slow 3s infinite;
+        }
+        @keyframes pulse-slow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col">
+
+    <header class="bg-gradient-to-r from-teal-500 via-emerald-500 to-green-500 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="showSection('hub')">
+                <div class="bg-white text-emerald-600 p-2.5 rounded-2xl shadow-inner text-2xl font-bold">
+                    📱
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-wide">Adab Peranti Digital</h1>
+                    <p class="text-xs text-emerald-100 font-medium">Pendidikan Moral / Kemahiran Sosial Tahun 1</p>
+                </div>
+            </div>
+
+            <!-- Global Action Controls -->
+            <div class="flex items-center gap-2">
+                <button onclick="speakText('Selamat datang ke Aplikasi Adab Peranti Digital Tahun Satu!')" class="bg-emerald-700/60 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-xl text-sm font-semibold flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-volume-high text-yellow-300"></i>
+                    <span class="hidden sm:inline">Dengar Arahan</span>
+                </button>
+                <button onclick="showSection('pentaksiran')" class="bg-amber-400 hover:bg-amber-500 text-slate-900 px-3.5 py-1.5 rounded-xl text-sm font-bold shadow flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    <span>Mod Guru</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-1 w-full">
+
+        <!-- Navigation Pills -->
+        <nav class="flex flex-wrap gap-2 mb-6 justify-center">
+            <button id="nav-hub" onclick="showSection('hub')" class="nav-btn bg-emerald-600 text-white px-4 py-2 rounded-2xl font-semibold shadow text-sm flex items-center gap-2 transition">
+                <i class="fa-solid fa-house"></i> Utama
+            </button>
+            <button id="nav-permainan" onclick="showSection('permainan')" class="nav-btn bg-white hover:bg-emerald-50 text-slate-700 border border-slate-200 px-4 py-2 rounded-2xl font-semibold text-sm flex items-center gap-2 transition">
+                <i class="fa-solid fa-thumbs-up text-blue-500"></i> Permainan Ibu Jari
+            </button>
+            <button id="nav-emotikon" onclick="showSection('emotikon')" class="nav-btn bg-white hover:bg-emerald-50 text-slate-700 border border-slate-200 px-4 py-2 rounded-2xl font-semibold text-sm flex items-center gap-2 transition">
+                <i class="fa-solid fa-face-smile text-amber-500"></i> Kad Emoji
+            </button>
+            <button id="nav-simulasi" onclick="showSection('simulasi')" class="nav-btn bg-white hover:bg-emerald-50 text-slate-700 border border-slate-200 px-4 py-2 rounded-2xl font-semibold text-sm flex items-center gap-2 transition">
+                <i class="fa-solid fa-comments text-purple-500"></i> Main Peranan
+            </button>
+            <button id="nav-lembaran" onclick="showSection('lembaran')" class="nav-btn bg-white hover:bg-emerald-50 text-slate-700 border border-slate-200 px-4 py-2 rounded-2xl font-semibold text-sm flex items-center gap-2 transition">
+                <i class="fa-solid fa-pen-to-square text-rose-500"></i> Lembaran Terbeza
+            </button>
+            <button id="nav-pentaksiran" onclick="showSection('pentaksiran')" class="nav-btn bg-white hover:bg-emerald-50 text-slate-700 border border-slate-200 px-4 py-2 rounded-2xl font-semibold text-sm flex items-center gap-2 transition">
+                <i class="fa-solid fa-list-check text-emerald-600"></i> Borang Guru
+            </button>
+        </nav>
+
+        <section id="sec-hub" class="space-y-6">
+            <div class="bg-gradient-to-br from-emerald-500 to-teal-700 rounded-3xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden">
+                <div class="relative z-10 max-w-2xl">
+                    <span class="bg-emerald-800/60 text-emerald-200 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3 inline-block">Mata Pelajaran Pendidikan Moral Tahun 1</span>
+                    <h2 class="text-2xl md:text-4xl font-extrabold leading-tight mb-3">Selamat Datang ke Modul Adab Peranti Digital! 📱✨</h2>
+                    <p class="text-emerald-100 text-sm md:text-base mb-6 leading-relaxed">
+                        Mari kita belajar cara menggunakan telefon pintar dan tablet secara beradab, meminta izin ibu bapa, menguruskan masa, serta mengekspresikan perasaan secara positif!
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="showSection('permainan'); speakText('Mula permainan Ibu Jari!');" class="bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-bold px-6 py-3 rounded-2xl shadow-lg transition btn-bounce flex items-center gap-2">
+                            <i class="fa-solid fa-gamepad text-lg"></i> Mula Permainan
+                        </button>
+                        <button onclick="speakText('Adab utama peranti digital ialah: Pertama, minta izin ibu bapa. Kedua, ikut masa yang ditetapkan. Ketiga, sentiasa senyum dan bersopan.')" class="bg-white/20 hover:bg-white/30 text-white font-semibold px-5 py-3 rounded-2xl transition flex items-center gap-2">
+                            <i class="fa-solid fa-volume-low text-yellow-300"></i> Dengar Ringkasan
+                        </button>
+                    </div>
+                </div>
+                <div class="absolute -right-10 -bottom-10 opacity-20 text-[200px] pointer-events-none select-none">
+                    📲
+                </div>
+            </div>
+
+            <!-- Learning Standard Badges -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold text-lg mb-3">
+                        4.3.1
+                    </div>
+                    <h3 class="font-bold text-slate-800 mb-1">Nyatakan Adab</h3>
+                    <p class="text-xs text-slate-500">Menyatakan cara menggunakan peranti digital secara beradab dan sopan.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center font-bold text-lg mb-3">
+                        4.3.2
+                    </div>
+                    <h3 class="font-bold text-slate-800 mb-1">Ekspresi Perasaan</h3>
+                    <p class="text-xs text-slate-500">Mengekspresikan perasaan gembira apabila mengamalkan adab yang betul.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center font-bold text-lg mb-3">
+                        4.3.3
+                    </div>
+                    <h3 class="font-bold text-slate-800 mb-1">Amal Simulasi</h3>
+                    <p class="text-xs text-slate-500">Menggunakan peranti digital secara beradab melalui aktiviti main peranan.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-permainan" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-md">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase">SP 4.3.1 - Kenal Pasti Adab</span>
+                        <h2 class="text-2xl font-bold text-slate-800 mt-1">Permainan Ibu Jari 👍 / 👎</h2>
+                    </div>
+                    <div class="bg-amber-100 text-amber-800 font-bold px-4 py-2 rounded-2xl text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-star text-amber-500 text-lg"></i>
+                        <span>Markah: <span id="thumbs-score">0</span> / 4</span>
+                    </div>
+                </div>
+
+                <!-- Game Card Canvas -->
+                <div id="game-card-container" class="max-w-xl mx-auto bg-slate-50 p-6 md:p-8 rounded-3xl border-2 border-dashed border-slate-300 text-center relative">
+                    <div id="game-progress" class="text-xs font-semibold text-slate-400 mb-2">Situasi 1 daripada 4</div>
+                    <div id="game-emoji-visual" class="text-7xl my-4 pulse-subtle">
+                        🙋‍♂️📱
+                    </div>
+                    <p id="game-text" class="text-lg font-bold text-slate-800 my-4 leading-relaxed">
+                        Aiman hendak main permainan di tablet. Aiman bertanya kepada ibunya: "Ibu, boleh saya guna tablet sebentar?"
+                    </p>
+
+                    <button onclick="speakGameText()" class="inline-flex items-center gap-2 text-sm text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-4 py-2 rounded-xl font-bold transition mb-6">
+                        <i class="fa-solid fa-volume-high"></i> Baca Situasi
+                    </button>
+
+                    <!-- Choice Buttons -->
+                    <div class="flex justify-center gap-4 mt-2">
+                        <button onclick="answerGame(true)" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-6 rounded-2xl shadow-lg transition btn-bounce flex flex-col items-center gap-1">
+                            <span class="text-3xl">👍</span>
+                            <span class="text-base">BERADAB</span>
+                        </button>
+                        <button onclick="answerGame(false)" class="flex-1 bg-rose-500 hover:bg-rose-600 text-white font-bold py-4 px-6 rounded-2xl shadow-lg transition btn-bounce flex flex-col items-center gap-1">
+                            <span class="text-3xl">👎</span>
+                            <span class="text-base">TIDAK BERADAB</span>
+                        </button>
+                    </div>
+
+                    <!-- Feedback Overlay -->
+                    <div id="game-feedback" class="hidden mt-6 p-4 rounded-2xl text-center font-bold"></div>
+                </div>
+
+                <div class="flex justify-between items-center mt-6">
+                    <button onclick="prevGameQuestion()" class="text-slate-500 hover:text-slate-800 font-bold text-sm px-4 py-2">
+                        <i class="fa-solid fa-arrow-left"></i> Situasi Sebelum
+                    </button>
+                    <button onclick="nextGameQuestion()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow">
+                        Situasi Seterusnya <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-emotikon" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-md">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full uppercase">SP 4.3.2 - Ekspresi Perasaan</span>
+                        <h2 class="text-2xl font-bold text-slate-800 mt-1">Aktiviti Kad Emoji: Tunjuk Situasi & Pilih Perasaan 😃☹️</h2>
+                        <p class="text-slate-500 text-sm mt-1">Baca/dengar situasi di bawah, kemudian pilih dan tunjukkan Kad Emoji perasaan yang paling tepat!</p>
+                    </div>
+                    <button onclick="toggleBigEmojiMode()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-4 py-2 rounded-2xl text-xs flex items-center gap-2 shadow">
+                        <i class="fa-solid fa-expand"></i> Mod Kad Emoji Besar (Skrin Penuh)
+                    </button>
+                </div>
+
+                <!-- Big Flashcard Modal for Classroom -->
+                <div id="modal-big-emoji" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="bg-white rounded-3xl p-8 max-w-lg w-full text-center relative border-4 border-amber-400 shadow-2xl">
+                        <button onclick="toggleBigEmojiMode()" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-700 w-10 h-10 rounded-full font-bold flex items-center justify-center">
+                            ✕
+                        </button>
+                        <span class="text-xs font-bold text-amber-600 bg-amber-100 px-3 py-1 rounded-full uppercase">Kad Perasaan Murid</span>
+                        <div id="big-emoji-icon" class="text-9xl my-6 animate-bounce">😊</div>
+                        <h2 id="big-emoji-title" class="text-3xl font-extrabold text-slate-800">GEMBIRA</h2>
+                        <p id="big-emoji-desc" class="text-base text-slate-600 mt-2 italic">"Saya gembira sebab saya murid beradab dan mendengar cakap ibu bapa!"</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mt-8">
+                            <button onclick="pickEmoji('😊', 'GEMBIRA', 'Saya gembira sebab saya murid yang beradab!')" class="bg-amber-50 hover:bg-amber-100 p-4 rounded-2xl border-2 border-amber-300 text-4xl font-bold flex flex-col items-center gap-2 btn-bounce">
+                                <span>😊</span>
+                                <span class="text-sm font-extrabold text-amber-800">GEMBIRA</span>
+                            </button>
+                            <button onclick="pickEmoji('☹️', 'SEDIH', 'Saya sedih kalau bertindak tidak beradab.')" class="bg-amber-50 hover:bg-amber-100 p-4 rounded-2xl border-2 border-amber-300 text-4xl font-bold flex flex-col items-center gap-2 btn-bounce">
+                                <span>☹️</span>
+                                <span class="text-sm font-extrabold text-amber-800">SEDIH</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                    <!-- Situation Card Container -->
+                    <div class="md:col-span-6 space-y-4">
+                        <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                            <span class="w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs">1</span>
+                            Pilih / Dengar Situasi:
+                        </h3>
+
+                        <div id="emoji-situations-list" class="space-y-3">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Interactive Emoji Answer Board -->
+                    <div class="md:col-span-6 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 p-6 rounded-3xl border-2 border-amber-200 text-center flex flex-col justify-between shadow-inner">
+                        <div>
+                            <span id="scen-badge" class="text-xs font-bold text-amber-800 bg-amber-200/80 px-3 py-1 rounded-full">Situasi 1</span>
+                            <p id="scen-active-text" class="text-base font-bold text-slate-800 my-3 leading-snug">
+                                "Aiman minta izin ibu sebelum main tablet. Ibu beri izin."
+                            </p>
+                            <button onclick="speakActiveEmojiScenario()" class="inline-flex items-center gap-1.5 text-xs text-amber-800 bg-amber-200/60 hover:bg-amber-200 px-3 py-1.5 rounded-xl font-bold transition mb-4">
+                                <i class="fa-solid fa-volume-high"></i> Baca Situasi
+                            </button>
+
+                            <!-- Character holding card display -->
+                            <div class="bg-white p-5 rounded-2xl border-2 border-amber-300 shadow-sm relative my-2">
+                                <div class="text-xs font-semibold text-slate-400 mb-1">Kad Emoji Yang Ditunjukkan Murid:</div>
+                                <div id="emoji-display-box" class="text-7xl my-2 transform transition hover:scale-110 duration-200 inline-block">❓</div>
+                                <h3 id="emoji-display-title" class="text-2xl font-black text-amber-700 tracking-wide">PILIH EMOJI</h3>
+                                <p id="emoji-display-desc" class="text-xs text-slate-600 mt-2 font-medium bg-amber-50 p-2.5 rounded-xl border border-amber-100">
+                                    "Sila pilih kad emoji di bawah yang menggambarkan perasaan bagi situasi ini!"
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Emoji Selection Cards -->
+                        <div class="mt-4">
+                            <label class="block text-xs font-bold text-slate-600 mb-2">Tunjukkan Kad Emoji Kamu (Klik Untuk Jawab):</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="selectEmojiAnswer('😊', 'GEMBIRA', 'Saya gembira sebab saya seorang anak yang sopan!')" class="bg-white hover:bg-amber-100 p-4 rounded-2xl border-2 border-amber-300 shadow btn-bounce flex flex-col items-center">
+                                    <span class="text-4xl">😊</span>
+                                    <span class="text-xs font-bold text-slate-700 mt-1">GEMBIRA</span>
+                                </button>
+                                <button onclick="selectEmojiAnswer('☹️', 'SEDIH', 'Saya sedih kalau bertindak tidak beradab.')" class="bg-white hover:bg-amber-100 p-4 rounded-2xl border-2 border-amber-300 shadow btn-bounce flex flex-col items-center">
+                                    <span class="text-4xl">☹️</span>
+                                    <span class="text-xs font-bold text-slate-700 mt-1">SEDIH</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Feedback Box -->
+                        <div id="emoji-feedback" class="hidden mt-3 p-3 rounded-xl text-xs font-bold"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-simulasi" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-md">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold text-purple-600 bg-purple-50 px-3 py-1 rounded-full uppercase">SP 4.3.3 - Main Peranan</span>
+                        <h2 class="text-2xl font-bold text-slate-800 mt-1">Simulasi Berpasangan: Minta - Guna - Pulang 🎭</h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleTimer()" id="btn-timer" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2 rounded-2xl text-sm flex items-center gap-2 shadow">
+                            <i class="fa-solid fa-stopwatch"></i> <span id="timer-label">Mula Jam Pemasa (15 Minit)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Simulated Timer Bar -->
+                <div id="timer-box" class="hidden bg-purple-50 p-4 rounded-2xl border border-purple-200 text-center mb-6">
+                    <span class="text-xs font-bold text-purple-700 uppercase">Pemasa Penggunaan Peranti</span>
+                    <div class="text-3xl font-extrabold text-purple-900 my-1" id="timer-display">15:00</div>
+                    <p class="text-xs text-purple-600">Apabila masa tamat, pulangkan peranti secara beradab!</p>
+                </div>
+
+                <!-- Role Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Anak Role -->
+                    <div class="bg-sky-50 rounded-3xl p-6 border-2 border-sky-200 relative overflow-hidden">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-4xl">👦</span>
+                            <div>
+                                <h3 class="font-extrabold text-sky-900 text-lg">KAD PERANAN A: ANAK</h3>
+                                <p class="text-xs text-sky-700">Tugas: Berkomunikasi dengan sopan</p>
+                            </div>
+                        </div>
+                        <ol class="space-y-3 text-sm text-sky-900 font-semibold list-decimal list-inside">
+                            <li class="bg-white p-3 rounded-xl shadow-sm">Datang ke arah ibu/ayah dengan gembira dan sopan.</li>
+                            <li class="bg-white p-3 rounded-xl shadow-sm">
+                                <span>Cakap:</span>
+                                <p class="text-sky-700 italic mt-1 bg-sky-50 p-2 rounded-lg border border-sky-100">
+                                    "Ibu / Ayah, boleh saya guna telefon 15 minit untuk belajar?"
+                                </p>
+                                <button onclick="speakText('Ibu atau Ayah, boleh saya guna telefon 15 minit untuk belajar?')" class="mt-2 text-xs text-sky-600 hover:underline flex items-center gap-1 font-bold">
+                                    <i class="fa-solid fa-volume-high"></i> Sebut Skrip
+                                </button>
+                            </li>
+                            <li class="bg-white p-3 rounded-xl shadow-sm">Duduk dan guna telefon secara beradab.</li>
+                            <li class="bg-white p-3 rounded-xl shadow-sm">
+                                <span>Pulangkan & Cakap:</span>
+                                <p class="text-sky-700 italic mt-1 bg-sky-50 p-2 rounded-lg border border-sky-100">
+                                    "Masa dah habis. Terima kasih ibu / ayah!"
+                                </p>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <!-- Ibu/Ayah Role -->
+                    <div class="bg-pink-50 rounded-3xl p-6 border-2 border-pink-200 relative overflow-hidden">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-4xl">👩‍👦</span>
+                            <div>
+                                <h3 class="font-extrabold text-pink-900 text-lg">KAD PERANAN B: IBU / AYAH</h3>
+                                <p class="text-xs text-pink-700">Tugas: Pengawasan & Tetap Masa</p>
+                            </div>
+                        </div>
+                        <ol class="space-y-3 text-sm text-pink-900 font-semibold list-decimal list-inside">
+                            <li class="bg-white p-3 rounded-xl shadow-sm">Senyum dan dengar permintaan anak.</li>
+                            <li class="bg-white p-3 rounded-xl shadow-sm">
+                                <span>Cakap:</span>
+                                <p class="text-pink-700 italic mt-1 bg-pink-50 p-2 rounded-lg border border-pink-100">
+                                    "Boleh, tapi ingat guna 15 minit sahaja ya."
+                                </p>
+                                <button onclick="speakText('Boleh, tapi ingat guna 15 minit sahaja ya.')" class="mt-2 text-xs text-pink-600 hover:underline flex items-center gap-1 font-bold">
+                                    <i class="fa-solid fa-volume-high"></i> Sebut Skrip
+                                </button>
+                            </li>
+                            <li class="bg-white p-3 rounded-xl shadow-sm">Duduk berdekatan untuk mengawasi anak.</li>
+                            <li class="bg-white p-3 rounded-xl shadow-sm">
+                                <span>Ingatkan Masa:</span>
+                                <p class="text-pink-700 italic mt-1 bg-pink-50 p-2 rounded-lg border border-pink-100">
+                                    "Masa dah habis, sila pulangkan telefon ya anak pandai."
+                                </p>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-lembaran" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-md">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold text-rose-600 bg-rose-50 px-3 py-1 rounded-full uppercase">Pentaksiran Bertulis Terbeza</span>
+                        <h2 class="text-2xl font-bold text-slate-800 mt-1">Lembaran Kerja Terbeza 📝</h2>
+                    </div>
+
+                    <!-- Level Selector -->
+                    <div class="flex gap-2">
+                        <button onclick="selectLevel(1)" id="lvl-btn-1" class="lvl-btn bg-emerald-600 text-white font-bold px-3.5 py-1.5 rounded-xl text-xs shadow">
+                            Aras 1: Bimbingan
+                        </button>
+                        <button onclick="selectLevel(2)" id="lvl-btn-2" class="lvl-btn bg-white hover:bg-slate-100 text-slate-700 font-bold px-3.5 py-1.5 rounded-xl text-xs border border-slate-200">
+                            Aras 2: Sederhana
+                        </button>
+                        <button onclick="selectLevel(3)" id="lvl-btn-3" class="lvl-btn bg-white hover:bg-slate-100 text-slate-700 font-bold px-3.5 py-1.5 rounded-xl text-xs border border-slate-200">
+                            Aras 3: Pengayaan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Level 1 Content -->
+                <div id="level-1-box" class="space-y-6">
+                    <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200">
+                        <h3 class="font-bold text-emerald-900 text-sm">Aras 1: Perlu Bimbingan (Surih & Warna Emoji)</h3>
+                        <p class="text-xs text-emerald-700">Tekan butang di bawah untuk menyurih/mengesahkan ejaan adab.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                            <label class="font-bold text-sm text-slate-800">1. Sebelum guna peranti digital, kita mesti:</label>
+                            <div class="p-3 bg-white rounded-xl font-mono text-center tracking-widest text-lg font-bold text-emerald-600 border border-dashed border-emerald-300">
+                                M I N T A &nbsp; I Z I N
+                            </div>
+                            <button onclick="checkLevel1(1)" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 rounded-xl text-xs">
+                                <i class="fa-solid fa-check"></i> Disurih & Ditingkatkan
+                            </button>
+                        </div>
+
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                            <label class="font-bold text-sm text-slate-800">2. Selepas guna peranti digital, kita mesti:</label>
+                            <div class="p-3 bg-white rounded-xl font-mono text-center tracking-widest text-lg font-bold text-emerald-600 border border-dashed border-emerald-300">
+                                P U L A N G K A N
+                            </div>
+                            <button onclick="checkLevel1(2)" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 rounded-xl text-xs">
+                                <i class="fa-solid fa-check"></i> Disurih & Ditingkatkan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 2 Content -->
+                <div id="level-2-box" class="hidden space-y-6">
+                    <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200">
+                        <h3 class="font-bold text-blue-900 text-sm">Aras 2: Sederhana / Menguasai (Isi Tempat Kosong)</h3>
+                        <p class="text-xs text-blue-700">Pilihan kata: <span class="font-bold bg-white px-2 py-0.5 rounded border">[ kebenaran ]</span> <span class="font-bold bg-white px-2 py-0.5 rounded border">[ masa ]</span> <span class="font-bold bg-white px-2 py-0.5 rounded border">[ gembira ]</span></p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-wrap items-center gap-2 text-sm font-semibold">
+                            <span>1. Saya mesti meminta</span>
+                            <select id="l2-q1" class="bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-sm font-bold text-emerald-600">
+                                <option value="">-- Pilih --</option>
+                                <option value="kebenaran">kebenaran</option>
+                                <option value="masa">masa</option>
+                                <option value="gembira">gembira</option>
+                            </select>
+                            <span>ibu bapa sebelum guna peranti.</span>
+                        </div>
+
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-wrap items-center gap-2 text-sm font-semibold">
+                            <span>2. Saya perlu menguruskan</span>
+                            <select id="l2-q2" class="bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-sm font-bold text-emerald-600">
+                                <option value="">-- Pilih --</option>
+                                <option value="kebenaran">kebenaran</option>
+                                <option value="masa">masa</option>
+                                <option value="gembira">gembira</option>
+                            </select>
+                            <span>penggunaan peranti digital dengan baik.</span>
+                        </div>
+
+                        <button onclick="submitLevel2()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-xl text-sm shadow">
+                            Semak Jawapan Aras 2
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Level 3 Content -->
+                <div id="level-3-box" class="hidden space-y-6">
+                    <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200">
+                        <h3 class="font-bold text-purple-900 text-sm">Aras 3: Pengayaan / Tinggi (Analisis Kritis)</h3>
+                        <p class="text-xs text-purple-700">Jawab soalan analisis adab peranti digital di bawah.</p>
+                    </div>
+
+                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
+                        <label class="block font-bold text-sm text-slate-800">
+                            Mengapakah kamu perlu meminta izin ibu bapa sebelum menggunakan peranti digital?
+                        </label>
+                        <div class="space-y-2 text-sm">
+                            <label class="flex items-center gap-2 font-semibold bg-white p-3 rounded-xl border border-slate-200 cursor-pointer">
+                                <input type="radio" name="l3-q1" value="betul" class="accent-purple-600">
+                                <span>Supaya ibu bapa tahu dan boleh memberi pengawasan selamat.</span>
+                            </label>
+                            <label class="flex items-center gap-2 font-semibold bg-white p-3 rounded-xl border border-slate-200 cursor-pointer">
+                                <input type="radio" name="l3-q1" value="salah" class="accent-purple-600">
+                                <span>Supaya boleh main sepanjang hari tanpa henti.</span>
+                            </label>
+                        </div>
+
+                        <button onclick="submitLevel3()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-2.5 rounded-xl text-sm shadow">
+                            Semak Jawapan Aras 3
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-pentaksiran" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-md">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full uppercase">Perekod Pentaksiran Guru</span>
+                        <h2 class="text-2xl font-bold text-slate-800 mt-1">Borang Pentaksiran Pemerhatian (TP1 - TP3) 📊</h2>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="addNewStudent()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-1 shadow">
+                            <i class="fa-solid fa-plus"></i> Tambah Murid
+                        </button>
+                        <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-1 shadow">
+                            <i class="fa-solid fa-print"></i> Cetak Borang
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Teacher Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
+                                <th class="p-3 font-bold w-12 text-center">No</th>
+                                <th class="p-3 font-bold">Nama Murid</th>
+                                <th class="p-3 font-bold text-center">TP1: Nyata Adab (Lisan)</th>
+                                <th class="p-3 font-bold text-center">TP2: Ekspresi Emosi (Kad)</th>
+                                <th class="p-3 font-bold text-center">TP3: Simulasi (Aksi)</th>
+                                <th class="p-3 font-bold">Catatan Guru</th>
+                                <th class="p-3 font-bold w-12 text-center">Tindakan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-table-body">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4 p-4 bg-amber-50 rounded-2xl border border-amber-200 text-xs text-amber-800 space-y-1">
+                    <p class="font-bold">Petunjuk Tahap Penguasaan (TP):</p>
+                    <p>• <strong>TP1:</strong> Murid boleh menyebut sekurang-kurangnya 1-2 adab penggunaan peranti digital.</p>
+                    <p>• <strong>TP2:</strong> Murid boleh menunjukkan emoji perasaan yang betul mengikut situasi adab.</p>
+                    <p>• <strong>TP3:</strong> Murid melakonkan cara meminta izin dan memulangkan peranti secara beradab.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+        <div class="max-w-6xl mx-auto px-4 text-center text-xs text-slate-500 font-medium">
+            <p>Bahan Pengajaran dan Pembelajaran (BBM) Digital • Pendidikan Moral Tahun 1 (Sub Bidang 4.3 Adab Peranti Digital)</p>
+            <p class="mt-1 text-slate-400">Direka khas untuk Pembelajaran Interaktif, Didik Hibur & Pentaksiran Bilik Darjah (PBD)</p>
+        </div>
+    </footer>
+
+    <script>
+        const emojiScenarios = [
+            {
+                id: 1,
+                title: 'Situasi 1: Minta Keizinan',
+                text: 'Aiman minta izin ibu sebelum main tablet. Ibu beri izin.',
+                correctEmojis: ['😊'],
+                bestEmoji: '😊',
+                bestTitle: 'GEMBIRA',
+                bestDesc: 'Saya gembira sebab saya seorang anak yang sopan dan mendapat kebenaran ibu!',
+                explanation: 'TEPAT! Menyatakan rasa gembira apabila mengamalkan adab meminta izin.'
+            },
+            {
+                id: 2,
+                title: 'Situasi 2: Mengambil Senyap-senyap',
+                text: 'Siti mengambil telefon ibu dari beg tangan tanpa memberitahu ibu.',
+                correctEmojis: ['☹️'],
+                bestEmoji: '☹️',
+                bestTitle: 'SEDIH',
+                bestDesc: 'Saya rasa sedih dan bersalah kerana mengambil telefon tanpa izin.',
+                explanation: 'TEPAT! Perbuatan tidak beradab menimbulkan rasa sedih.'
+            },
+            {
+                id: 3,
+                title: 'Situasi 3: Memulangkan Mengikut Masa',
+                text: 'Adam menutup tablet dan memulangkannya kepada ibu apabila masa 15 minit tamat.',
+                correctEmojis: ['😊'],
+                bestEmoji: '😊',
+                bestTitle: 'GEMBIRA',
+                bestDesc: 'Saya gembira dan bangga kerana mematuhi masa yang ditetapkan!',
+                explanation: 'TEPAT! Menepati masa membuatkan ibu gembira dan diri sendiri tenang.'
+            },
+            {
+                id: 4,
+                title: 'Situasi 4: Enggan Pulangkan Telefon',
+                text: 'Mening menangis dan marah apabila ibu meminta telefon semula.',
+                correctEmojis: ['☹️'],
+                bestEmoji: '☹️',
+                bestTitle: 'SEDIH',
+                bestDesc: 'Tindakan ini tidak baik dan membuatkan rasa sedih.',
+                explanation: 'TEPAT! Perbuatan tidak beradab membuatkan suasana menjadi sedih.'
+            }
+        ];
+
+        let activeEmojiScenId = 1;
+
+        const gameQuestions = [
+            {
+                emoji: '🙋‍♂️📱',
+                text: 'Aiman hendak main permainan di tablet. Aiman bertanya kepada ibunya: "Ibu, boleh saya guna tablet sebentar?"',
+                isCorrect: true,
+                explanation: 'BERADAB! Meminta izin ibu bapa adalah adab utama sebelum menyentuh peranti digital.'
+            },
+            {
+                emoji: '🤫👜',
+                text: 'Siti terus mengambil telefon pintar dari dalam beg tangan ibu secara senyap-senyap tanpa memberitahu ibu.',
+                isCorrect: false,
+                explanation: 'TIDAK BERADAB! Jangan ambil telefon tanpa kebenaran ibu bapa.'
+            },
+            {
+                emoji: '⏰😊',
+                text: 'Bila masa guna tablet sudah habis, Adam menutup tablet dan memulangkannya kepada ibu dengan gembira.',
+                isCorrect: true,
+                explanation: 'BERADAB! Menguruskan masa dengan disiplin dan memulangkan peranti dengan mesra.'
+            },
+            {
+                emoji: '😭📱',
+                text: 'Mening tidak mahu pulangkan telefon dan menangis serta menjerit apabila ibu minta semula telefon.',
+                isCorrect: false,
+                explanation: 'TIDAK BERADAB! Kita mesti mematuhi masa yang ditetapkan oleh ibu bapa.'
+            }
+        ];
+
+        let currentGameIdx = 0;
+        let gameScore = 0;
+        let isTimerRunning = false;
+        let timerInterval = null;
+        let timerSeconds = 15 * 60;
+
+        let studentsList = [
+            { id: 1, name: 'Aiman Farhan', tp1: true, tp2: true, tp3: true, note: 'Sangat bersopan semasa simulasi.' },
+            { id: 2, name: 'Siti Nurhaliza', tp1: true, tp2: true, tp3: false, note: 'Perlu bimbingan untuk simulasi berpasangan.' },
+            { id: 3, name: 'Adam Haris', tp1: true, tp2: false, tp3: true, note: 'Boleh menyatakan adab dengan baik.' }
+        ];
+
+        function showSection(sectionId) {
+            const sections = ['hub', 'permainan', 'emotikon', 'simulasi', 'lembaran', 'pentaksiran'];
+            sections.forEach(sec => {
+                document.getElementById(`sec-${sec}`).classList.add('hidden');
+                const btn = document.getElementById(`nav-${sec}`);
+                if (btn) {
+                    btn.classList.remove('bg-emerald-600', 'text-white');
+                    btn.classList.add('bg-white', 'text-slate-700');
+                }
+            });
+
+            document.getElementById(`sec-${sectionId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`nav-${sectionId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-emerald-600', 'text-white');
+                activeBtn.classList.remove('bg-white', 'text-slate-700');
+            }
+
+            if (sectionId === 'pentaksiran') renderStudentTable();
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ms-MY';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert(text);
+            }
+        }
+
+        function renderGameQuestion() {
+            const q = gameQuestions[currentGameIdx];
+            document.getElementById('game-progress').innerText = `Situasi ${currentGameIdx + 1} daripada ${gameQuestions.length}`;
+            document.getElementById('game-emoji-visual').innerText = q.emoji;
+            document.getElementById('game-text').innerText = q.text;
+
+            const fb = document.getElementById('game-feedback');
+            fb.classList.add('hidden');
+        }
+
+        function speakGameText() {
+            speakText(gameQuestions[currentGameIdx].text);
+        }
+
+        function answerGame(userChoice) {
+            const q = gameQuestions[currentGameIdx];
+            const fb = document.getElementById('game-feedback');
+            fb.classList.remove('hidden');
+
+            if (userChoice === q.isCorrect) {
+                gameScore++;
+                document.getElementById('thumbs-score').innerText = gameScore;
+                fb.className = "mt-6 p-4 rounded-2xl font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
+                fb.innerText = "🎉 TEPAT SEKALI! " + q.explanation;
+                confetti({ particleCount: 40, spread: 60, origin: { y: 0.7 } });
+                speakText("Tepat sekali! " + q.explanation);
+            } else {
+                fb.className = "mt-6 p-4 rounded-2xl font-bold bg-rose-100 text-rose-800 border border-rose-300";
+                fb.innerText = "❌ KURANG TEPAT! " + q.explanation;
+                speakText("Kurang tepat. " + q.explanation);
+            }
+        }
+
+        function nextGameQuestion() {
+            if (currentGameIdx < gameQuestions.length - 1) {
+                currentGameIdx++;
+                renderGameQuestion();
+            } else {
+                alert(`Tahniah! Kamu telah menyelesaikan semua situasi dengan markah ${gameScore}/${gameQuestions.length}!`);
+            }
+        }
+
+        function prevGameQuestion() {
+            if (currentGameIdx > 0) {
+                currentGameIdx--;
+                renderGameQuestion();
+            }
+        }
+
+        function renderEmojiSituations() {
+            const list = document.getElementById('emoji-situations-list');
+            if (!list) return;
+            list.innerHTML = '';
+
+            emojiScenarios.forEach((scen) => {
+                const isActive = scen.id === activeEmojiScenId;
+                const btn = document.createElement('button');
+                btn.id = `btn-scen-${scen.id}`;
+                btn.className = `scen-btn w-full text-left p-4 rounded-2xl border-2 transition flex items-center justify-between ${
+                    isActive ? 'border-amber-500 bg-amber-50 shadow-sm' : 'border-slate-200 bg-white hover:border-amber-300'
+                }`;
+                btn.onclick = () => selectEmojiScenario(scen.id);
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs">${scen.id}</span>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm">${scen.title}</h4>
+                            <p class="text-xs text-slate-500 line-clamp-1">${scen.text}</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid ${isActive ? 'fa-circle-check text-amber-600' : 'fa-circle text-slate-200'}"></i>
+                `;
+                list.appendChild(btn);
+            });
+
+            const activeScen = emojiScenarios.find(s => s.id === activeEmojiScenId);
+            if (activeScen) {
+                document.getElementById('scen-badge').innerText = `Situasi ${activeScen.id}`;
+                document.getElementById('scen-active-text').innerText = `"${activeScen.text}"`;
+                
+                // Reset kad supaya jawapan emoji tidak dipaparkan terlebih dahulu
+                resetEmojiDisplay();
+            }
+        }
+
+        function resetEmojiDisplay() {
+            document.getElementById('emoji-display-box').innerText = '❓';
+            document.getElementById('emoji-display-title').innerText = 'PILIH EMOJI';
+            document.getElementById('emoji-display-desc').innerText = '"Sila pilih kad emoji di bawah yang menggambarkan perasaan bagi situasi ini!"';
+            const fb = document.getElementById('emoji-feedback');
+            if (fb) fb.classList.add('hidden');
+        }
+
+        function selectEmojiScenario(id) {
+            activeEmojiScenId = id;
+            renderEmojiSituations();
+            const activeScen = emojiScenarios.find(s => s.id === id);
+            if (activeScen) {
+                speakText(activeScen.text);
+            }
+        }
+
+        function speakActiveEmojiScenario() {
+            const activeScen = emojiScenarios.find(s => s.id === activeEmojiScenId);
+            if (activeScen) {
+                speakText(activeScen.text);
+            }
+        }
+
+        function selectEmojiAnswer(emoji, title, desc) {
+            const activeScen = emojiScenarios.find(s => s.id === activeEmojiScenId);
+            const fb = document.getElementById('emoji-feedback');
+            fb.classList.remove('hidden');
+
+            pickEmoji(emoji, title, desc, false);
+
+            if (activeScen && activeScen.correctEmojis.includes(emoji)) {
+                fb.className = "mt-3 p-3 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
+                fb.innerText = "🎉 JAWAPAN TEPAT! " + activeScen.explanation;
+                confetti({ particleCount: 35, spread: 50, origin: { y: 0.7 } });
+                speakText(`Jawapan tepat! ${title}. ${activeScen.explanation}`);
+            } else {
+                fb.className = "mt-3 p-3 rounded-xl text-xs font-bold bg-rose-100 text-rose-800 border border-rose-300";
+                fb.innerText = "💡 Sila pertimbangkan semula: " + (activeScen ? activeScen.explanation : 'Pilih emoji yang menggambarkan adab.');
+                speakText(`Tunjukkan kad emoji yang paling sesuai dengan situasi ini.`);
+            }
+        }
+
+        function pickEmoji(emoji, title, desc, shouldSpeak = true) {
+            document.getElementById('emoji-display-box').innerText = emoji;
+            document.getElementById('emoji-display-title').innerText = title;
+            document.getElementById('emoji-display-desc').innerText = `"${desc}"`;
+
+            document.getElementById('big-emoji-icon').innerText = emoji;
+            document.getElementById('big-emoji-title').innerText = title;
+            document.getElementById('big-emoji-desc').innerText = `"${desc}"`;
+
+            if (shouldSpeak) {
+                speakText(`${title}! ${desc}`);
+            }
+        }
+
+        function toggleBigEmojiMode() {
+            const modal = document.getElementById('modal-big-emoji');
+            if (modal) {
+                modal.classList.toggle('hidden');
+            }
+        }
+
+        function toggleTimer() {
+            const timerBox = document.getElementById('timer-box');
+            const btnLabel = document.getElementById('timer-label');
+
+            if (!isTimerRunning) {
+                isTimerRunning = true;
+                timerBox.classList.remove('hidden');
+                btnLabel.innerText = "Hentikan Pemasa";
+                timerInterval = setInterval(() => {
+                    if (timerSeconds > 0) {
+                        timerSeconds--;
+                        const mins = Math.floor(timerSeconds / 60);
+                        const secs = timerSeconds % 60;
+                        document.getElementById('timer-display').innerText = 
+                            `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                    } else {
+                        clearInterval(timerInterval);
+                        alert("⏱️ Masa 15 minit sudah tamat! Sila pulangkan peranti kepada ibu bapa secara beradab!");
+                        speakText("Masa penggunaan sudah tamat! Sila pulangkan peranti anda secara beradab.");
+                    }
+                }, 1000);
+            } else {
+                isTimerRunning = false;
+                clearInterval(timerInterval);
+                btnLabel.innerText = "Mula Jam Pemasa (15 Minit)";
+            }
+        }
+
+        function selectLevel(lvl) {
+            document.querySelectorAll('.lvl-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-600', 'text-white');
+                btn.classList.add('bg-white', 'text-slate-700');
+            });
+            document.getElementById(`lvl-btn-${lvl}`).classList.add('bg-emerald-600', 'text-white');
+
+            document.getElementById('level-1-box').classList.add('hidden');
+            document.getElementById('level-2-box').classList.add('hidden');
+            document.getElementById('level-3-box').classList.add('hidden');
+
+            document.getElementById(`level-${lvl}-box`).classList.remove('hidden');
+        }
+
+        function checkLevel1(num) {
+            confetti({ particleCount: 30, spread: 50 });
+            speakText("Syabas! Perkataan telah disurih dengan betul.");
+        }
+
+        function submitLevel2() {
+            const q1 = document.getElementById('l2-q1').value;
+            const q2 = document.getElementById('l2-q2').value;
+
+            if (q1 === 'kebenaran' && q2 === 'masa') {
+                alert("🎉 Syabas! Semua jawapan Aras 2 adalah TEPAT!");
+                confetti({ particleCount: 50 });
+            } else {
+                alert("Sila semak semula pilihan jawapan anda.");
+            }
+        }
+
+        function submitLevel3() {
+            const selected = document.querySelector('input[name="l3-q1"]:checked');
+            if (selected && selected.value === 'betul') {
+                alert("🌟 Tahniah! Analisis anda tepat sekali. Ibu bapa memberi kebenaran untuk pengawasan selamat.");
+                confetti({ particleCount: 60 });
+            } else {
+                alert("Sila pilih jawapan yang terbaik.");
+            }
+        }
+
+        function renderStudentTable() {
+            const tbody = document.getElementById('student-table-body');
+            tbody.innerHTML = '';
+
+            studentsList.forEach((st, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-slate-100 hover:bg-slate-50 transition";
+                tr.innerHTML = `
+                    <td class="p-3 text-center font-bold text-slate-500">${idx + 1}</td>
+                    <td class="p-3 font-semibold text-slate-800">
+                        <input type="text" value="${st.name}" onchange="updateStudentName(${st.id}, this.value)" class="bg-transparent border-b border-dashed border-slate-300 focus:border-emerald-500 outline-none w-full">
+                    </td>
+                    <td class="p-3 text-center">
+                        <input type="checkbox" ${st.tp1 ? 'checked' : ''} onchange="toggleTP(${st.id}, 'tp1')" class="w-5 h-5 accent-emerald-600 rounded cursor-pointer">
+                    </td>
+                    <td class="p-3 text-center">
+                        <input type="checkbox" ${st.tp2 ? 'checked' : ''} onchange="toggleTP(${st.id}, 'tp2')" class="w-5 h-5 accent-emerald-600 rounded cursor-pointer">
+                    </td>
+                    <td class="p-3 text-center">
+                        <input type="checkbox" ${st.tp3 ? 'checked' : ''} onchange="toggleTP(${st.id}, 'tp3')" class="w-5 h-5 accent-emerald-600 rounded cursor-pointer">
+                    </td>
+                    <td class="p-3">
+                        <input type="text" value="${st.note}" onchange="updateStudentNote(${st.id}, this.value)" class="bg-transparent border-b border-dashed border-slate-300 focus:border-emerald-500 outline-none w-full text-xs text-slate-600">
+                    </td>
+                    <td class="p-3 text-center">
+                        <button onclick="deleteStudent(${st.id})" class="text-rose-500 hover:text-rose-700">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function toggleTP(id, field) {
+            const student = studentsList.find(s => s.id === id);
+            if (student) {
+                student[field] = !student[field];
+            }
+        }
+
+        function updateStudentName(id, val) {
+            const student = studentsList.find(s => s.id === id);
+            if (student) student.name = val;
+        }
+
+        function updateStudentNote(id, val) {
+            const student = studentsList.find(s => s.id === id);
+            if (student) student.note = val;
+        }
+
+        function addNewStudent() {
+            const newId = studentsList.length ? Math.max(...studentsList.map(s => s.id)) + 1 : 1;
+            studentsList.push({
+                id: newId,
+                name: `Murid ${newId}`,
+                tp1: false,
+                tp2: false,
+                tp3: false,
+                note: 'Pentaksiran baharu'
+            });
+            renderStudentTable();
+        }
+
+        function deleteStudent(id) {
+            studentsList = studentsList.filter(s => s.id !== id);
+            renderStudentTable();
+        }
+
+        window.onload = function() {
+            renderGameQuestion();
+            renderEmojiSituations();
+        };
+    </script>
+</body>
+</html>
